@@ -9,12 +9,12 @@ commands:
         type: string
     steps:
       - run:
-        name: deploy Stack
-        command: |
-          aws cloudformation deploy \
-           --stack-name <<parameters.stackName>> \
-           --template-body file://<<parameters.stackName>> \
-           --region=us-east-1
+          name: deploy Stack
+          command: |
+            aws cloudformation deploy \
+            --stack-name <<parameters.stackName>> \
+            --template-body file://<<parameters.stackName>> \
+            --region=us-east-1
 
 jobs:
   say-hello:
