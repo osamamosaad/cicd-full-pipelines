@@ -32,7 +32,7 @@ jobs:
     steps:
       - checkout
       - cloudformation-deploy:
-        path: "serversConfigurations.yml"
+          path: "serversConfigurations.yml"
 
 
 workflows:
