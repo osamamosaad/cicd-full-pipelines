@@ -17,7 +17,7 @@ commands:
             --region=us-east-1
 
 jobs:
-  sayHello:
+  SayHello:
     docker:
       - image: cimg/base:stable
     steps:
@@ -37,5 +37,5 @@ jobs:
 workflows:
   say-hello-workflow:
     jobs:
-      - say-hello
-      - sayHello
+      - SayHello
+      - print_workflowID
