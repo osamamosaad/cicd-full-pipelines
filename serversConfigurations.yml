@@ -1,0 +1,31 @@
+Description: Setup EC2 instances for web servers
+Parameters:
+  ImageId:
+    Description: Image id
+    Type: String
+    Default: ami-09d56f8956ab235b3
+  InstanceType:
+    Description: Instance Type
+    Type: String
+    Default: t1.micro
+
+Resources:
+  SG:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable SSH access via port 22
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 0.0.0.0/0
+
+  WebServer:
+    Type: AWS::EC2::Instance
+    Properties:
+      SecurityGroups:
+        - !Ref SG
+      KeyName: MyKeyPair
+      ImageId: !Ref ImageId
+      InstanceType: !Ref InstanceType
+
