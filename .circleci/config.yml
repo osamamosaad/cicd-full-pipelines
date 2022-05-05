@@ -4,7 +4,7 @@ commands:
     parameters:
       stackName:
         type: string
-        default: myStack-${CIRCLE_WORKFLOW_ID:0:5}
+        default: "myStack-${CIRCLE_WORKFLOW_ID:0:5}"
       path:
         type: string
     steps:
