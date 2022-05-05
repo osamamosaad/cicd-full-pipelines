@@ -13,7 +13,7 @@ commands:
           command: |
             aws cloudformation deploy \
               --stack-name <<parameters.stackName>> \
-              --template-body file://<<parameters.stackName>> \
+              --template-file file://<<parameters.stackName>> \
               --region=us-east-1
 
 jobs:
