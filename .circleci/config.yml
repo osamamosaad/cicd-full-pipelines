@@ -39,7 +39,7 @@ workflows:
   say-hello-workflow:
     jobs:
       - SayHello
-      - DeployInfrastructure
+      - DeployInfrastructure:
           filters:
             branches:
               only:
