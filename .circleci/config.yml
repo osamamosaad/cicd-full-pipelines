@@ -31,8 +31,8 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
-      - run: echo ${CIRCLE_WORKFLOW_ID:0:5}
-      - run: echo ${CIRCLE_WORKFLOW_ID}
+      - run: "echo ${CIRCLE_WORKFLOW_ID:0:5}"
+      - run: "echo ${CIRCLE_WORKFLOW_ID}"
 
 workflows:
   say-hello-workflow:
