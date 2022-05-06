@@ -51,7 +51,7 @@ jobs:
               --query "Reservations[*].Instances[*].PublicIpAddress" \
               --output text >> inventory
       - persist_to_workspace:
-          root: /tmp/workspace
+          root: .
           paths:
             - inventory
       - rollback-infrastructure
@@ -62,10 +62,10 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: /tmp/workspace
+          at: .
       - run:
           name: "print output inventory file"
-          command: cat /tmp/workspace/inventory
+          command: cat inventory
   # ConfigureInfrastructure:
   #   docker:
   #     - image: python:3.7-alpine3.11
