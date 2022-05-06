@@ -18,7 +18,7 @@ commands:
   rollback-infrastructure:
     steps:
       - run:
-          name: deploy Stack
+          name: Rollback Infrastructure
           command: aws cloudformation delete-stack --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5}
           when: on_fail
 
@@ -43,7 +43,7 @@ jobs:
       - run:
           name: list all public Ip Address
           command: |
-            aws ec2 describe-instances-x \
+            aws ec2 describe-instances \
               --query "Reservations[*].Instances[*].PublicIpAddress" \
               --output text >> inventory
       - persist_to_workspace:
