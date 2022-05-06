@@ -62,20 +62,19 @@ jobs:
     steps:
       - checkout
       - attach_workspace:
-          at: .
+          at: serverSetup
       - run:
           name: "print output inventory file"
-          command: cat inventory
-  # ConfigureInfrastructure:
-  #   docker:
-  #     - image: python:3.7-alpine3.11
-  #   steps:
-  #     - checkout
-  #     - add_ssh_keys:
-  #       - fingerprints: [bc:bb:64:a6:b0:50:ad:d9:7b:2a:3f:ae:4e:f6:99:3a]
-  #     - run: apk add --update ansible
-  #     - run: echo "[all]" >> inventory
-  #     - run: cd serverSetup && ansible-playbook main.yml -i inventory
+          command: cat serverSetup/inventory
+  ConfigureInfrastructure:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      - checkout
+      - add_ssh_keys:
+        - fingerprints: [bc:bb:64:a6:b0:50:ad:d9:7b:2a:3f:ae:4e:f6:99:3a]
+      - run: apk add --update ansible
+      - run: cd serverSetup && ansible-playbook main.yml -i inventory
 
 
 
@@ -87,6 +86,6 @@ workflows:
       - print_inventory:
           requires:
             - DeployInfrastructure
-      # - ConfigureInfrastructure:
-      #     requires:
-      #       - DeployInfrastructure
+      - ConfigureInfrastructure:
+          requires:
+            - print_inventory
