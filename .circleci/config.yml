@@ -74,6 +74,8 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "bc:bb:64:a6:b0:50:ad:d9:7b:2a:3f:ae:4e:f6:99:3a"
+      - attach_workspace:
+          at: serverSetup
       - run: apk add --update ansible
       - run: cd serverSetup && ansible-playbook main.yml -i inventory
 
