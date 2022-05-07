@@ -78,17 +78,14 @@ jobs:
           at: serverSetup
       - run: apk add --update ansible
       - run: cd serverSetup && ansible-playbook main.yml -i inventory
-
-
+      # - rollback-infrastructure
 
 workflows:
   say-hello-workflow:
     jobs:
       - SayHello
-      - DeployInfrastructure
-      - print_inventory:
-          requires:
-            - DeployInfrastructure
-      - ConfigureInfrastructure:
-          requires:
-            - print_inventory
+      # - DeployInfrastructure
+      # - print_inventory:
+      #     requires:
+      #       - DeployInfrastructure
+      - ConfigureInfrastructure
