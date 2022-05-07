@@ -43,13 +43,13 @@ jobs:
             yum install -y tar gzip
       - cloudformation-deploy:
           path: "serversConfigurations.yml"
-      - run: echo "[all]" > inventory
+      - run: echo "[all]" > serverSetup/inventory
       - run:
           name: list all public Ip Address
           command: |
             cd serverSetup &&
             aws ec2 describe-instances \
-              --query "Reservations[*].Instances[*].PublicIpAddress" \
+              --query "Reservations[*].Instances[?Tags[?Value=='myStack-${CIRCLE_WORKFLOW_ID:0:5}']].PublicIpAddress" \
               --output text >> inventory
       - run:
           name: validate inventory has a data
