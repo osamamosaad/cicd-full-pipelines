@@ -53,7 +53,7 @@ jobs:
               --output text >> inventory
       - run:
           name: validate inventory has a data
-          command: cat inventory
+          command: cat serverSetup/inventory
       - persist_to_workspace:
           root: .
           paths:
@@ -71,6 +71,9 @@ jobs:
           # fingerprints: ["80:57:18:f7:64:b2:59:54:a7:cf:4e:b8:44:c8:46:61"]
       - attach_workspace:
           at: .
+      - run:
+          name: validate inventory has a data
+          command: cat serverSetup/inventory
       - run: apk add --update ansible
       - run: cd serverSetup && ansible-playbook -i inventory main.yml
       - rollback-infrastructure
