@@ -8,6 +8,10 @@ Parameters:
     Description: Instance Type
     Type: String
     Default: t1.micro
+  KeyPair:
+    Description: Define the key pair
+    Type: String
+    Default: udacityKey
 
 Resources:
   SG:
@@ -29,7 +33,7 @@ Resources:
     Properties:
       SecurityGroups:
         - !Ref SG
-      KeyName: udacityKey2
+      KeyName: !Ref keyPair
       ImageId: !Ref ImageId
       InstanceType: !Ref InstanceType
 
