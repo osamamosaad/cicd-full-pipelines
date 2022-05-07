@@ -76,8 +76,8 @@ jobs:
       - attach_workspace:
           at: serverSetup
       - run: apk add --update ansible
-      - run: ansible-playbook -i serverSetup/inventory serverSetup/main.yml
-      # - rollback-infrastructure
+      - run: cd serverSetup ansible-playbook -i inventory main.yml
+      - rollback-infrastructure
 
 workflows:
   say-hello-workflow:
