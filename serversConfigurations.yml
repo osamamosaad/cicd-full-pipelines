@@ -25,7 +25,7 @@ Resources:
     Properties:
       SecurityGroups:
         - !Ref SG
-      KeyName: MyKeyPair
+      KeyName: udacityKey
       ImageId: !Ref ImageId
       InstanceType: !Ref InstanceType
 
