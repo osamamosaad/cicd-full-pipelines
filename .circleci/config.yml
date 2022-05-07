@@ -72,7 +72,7 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["bc:bb:64:a6:b0:50:ad:d9:7b:2a:3f:ae:4e:f6:99:3a"]
+          fingerprints: ["37:4b:81:a5:f7:c3:b1:9a:62:e1:f8:af:13:ce:e2:b9"]
       - attach_workspace:
           at: serverSetup
       - run: apk add --update ansible
@@ -83,10 +83,8 @@ workflows:
   say-hello-workflow:
     jobs:
       - SayHello
-      - DeployInfrastructure
-      - print_inventory:
-          requires:
-            - DeployInfrastructure
-      - ConfigureInfrastructure:
-          requires:
-            - DeployInfrastructure
+      # - DeployInfrastructure
+      # - print_inventory:
+      #     requires:
+      #       - DeployInfrastructure
+      - ConfigureInfrastructure
