@@ -74,7 +74,7 @@ jobs:
       - run:
           name: validate inventory has a data
           command: cat serverSetup/inventory
-      - run: apk add --update ansible
+      - run: pip install ansible
       - run: cd serverSetup && ansible-playbook -i inventory main.yml
       - run:
           name: install awscli
