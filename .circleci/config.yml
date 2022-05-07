@@ -21,17 +21,6 @@ commands:
           name: Rollback Infrastructure
           command: aws cloudformation delete-stack --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5}
           when: on_fail
-  bring-aws-package:
-    steps:
-      - run:
-          name: install aws cli
-          command: |
-            apk add --update curl
-            sudo apt update && sudo apt install -yy less
-            curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-            unzip awscliv2.zip
-            sudo ./aws/install
-          when: on_fail
 
 jobs:
   SayHello:
@@ -54,11 +43,11 @@ jobs:
             yum install -y tar gzip
       - cloudformation-deploy:
           path: "serversConfigurations.yml"
-      - run: echo "[all]" > serverSetup/inventory
       - run:
           name: list all public Ip Address
           command: |
             cd serverSetup &&
+            echo "[all]" > inventory &&
             aws ec2 describe-instances \
               --query "Reservations[*].Instances[?Tags[?Value=='myStack-${CIRCLE_WORKFLOW_ID:0:5}']].PublicIpAddress" \
               --output text >> inventory
@@ -87,7 +76,11 @@ jobs:
           command: cat serverSetup/inventory
       - run: apk add --update ansible
       - run: cd serverSetup && ansible-playbook -i inventory main.yml
-      - bring-aws-package
+      - run:
+          name: install awscli
+          command: |
+            pip install awscli
+          when: on_fail
       - rollback-infrastructure
 
   SmokeTest:
@@ -106,7 +99,11 @@ jobs:
             else
               return 1
             fi
-      - bring-aws-package
+      - run:
+          name: install awscli
+          command: |
+            pip install awscli
+          when: on_fail
       - rollback-infrastructure
 
 workflows:
