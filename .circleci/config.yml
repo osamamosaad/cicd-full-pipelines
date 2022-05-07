@@ -47,46 +47,61 @@ jobs:
       - run:
           name: list all public Ip Address
           command: |
+            cd serverSetup &&
             aws ec2 describe-instances \
               --query "Reservations[*].Instances[*].PublicIpAddress" \
               --output text >> inventory
+      - run:
+          name: validate inventory has a data
+          command: cat inventory
       - persist_to_workspace:
           root: .
           paths:
-            - inventory
+            - serverSetup/inventory
       - rollback-infrastructure
 
-  print_inventory:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - attach_workspace:
-          at: serverSetup
-      - run:
-          name: "print output inventory file"
-          command: cat serverSetup/inventory
+
   ConfigureInfrastructure:
     docker:
       - image: python:3.9.0-alpine
     steps:
       - checkout
       - add_ssh_keys:
-          fingerprints: ["80:57:18:f7:64:b2:59:54:a7:cf:4e:b8:44:c8:46:61"]
+          fingerprints: ["37:4b:81:a5:f7:c3:b1:9a:62:e1:f8:af:13:ce:e2:b9"]
+          # fingerprints: ["80:57:18:f7:64:b2:59:54:a7:cf:4e:b8:44:c8:46:61"]
       - attach_workspace:
-          at: serverSetup
+          at: .
       - run: apk add --update ansible
       - run: cd serverSetup && ansible-playbook -i inventory main.yml
       - rollback-infrastructure
 
+  SmokeTest:
+    docker:
+      - image: alpine:latest
+    steps:
+      - run: apk add --update curl
+      - run:
+          name: check web working well
+          command: |
+            URL="https://blog.udacity.com/"
+            # Test if website exists
+            if curl -s --head ${URL}
+            then
+              return 0
+            else
+              return 1
+            fi
+      - rollback-infrastructure
+
 workflows:
-  say-hello-workflow:
+  udacity-workflow:
     jobs:
       - SayHello
       - DeployInfrastructure
-      - print_inventory:
-          requires:
-            - DeployInfrastructure
       - ConfigureInfrastructure:
           requires:
             - DeployInfrastructure
+      - SmokeTest:
+          requires:
+            - ConfigureInfrastructure
+
