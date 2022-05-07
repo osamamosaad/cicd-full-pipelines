@@ -83,8 +83,10 @@ workflows:
   say-hello-workflow:
     jobs:
       - SayHello
-      # - DeployInfrastructure
-      # - print_inventory:
-      #     requires:
-      #       - DeployInfrastructure
-      - ConfigureInfrastructure
+      - DeployInfrastructure
+      - print_inventory:
+          requires:
+            - DeployInfrastructure
+      - ConfigureInfrastructure:
+          requires:
+            - DeployInfrastructure
