@@ -33,7 +33,7 @@ Resources:
     Properties:
       SecurityGroups:
         - !Ref SG
-      KeyName: !Ref keyPair
+      KeyName: !Ref KeyPair
       ImageId: !Ref ImageId
       InstanceType: !Ref InstanceType
 
